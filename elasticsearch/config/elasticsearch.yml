@@ -7,3 +7,12 @@ network.host: 0.0.0.0
 
 xpack.license.self_generated.type: trial
 xpack.security.enabled: true
+
+## Raspberry Pi 5 Optimizations
+# Disable memory lock for ARM64
+bootstrap.memory_lock: false
+# Thread pool settings for ARM64
+thread_pool.search.queue_size: 100
+thread_pool.write.queue_size: 200
+# Index buffer for better performance
+indices.memory.index_buffer_size: 10%
