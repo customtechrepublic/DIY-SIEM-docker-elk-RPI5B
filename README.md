@@ -211,6 +211,44 @@ cd extensions/heartbeat
 docker compose up -d
 ```
 
+## Syslog Collector
+
+### Start Syslog Forwarder
+
+The project includes a syslog collector that can run alongside the ELK stack to receive logs from network devices.
+
+```bash
+cd syslog-forwarder
+docker compose up -d
+```
+
+The syslog forwarder listens on **TCP/UDP port 514** and forwards all logs to Logstash.
+
+### Configure Devices to Send Syslog
+
+**Linux:**
+```bash
+# Add to /etc/rsyslog.conf
+*.* @@<PI-IP>:514
+```
+
+**Cisco IOS:**
+```bash
+logging host <PI-IP>
+logging trap informational
+```
+
+**Ubiquiti Edgerouter:**
+```bash
+set system syslog host <PI-IP>
+set system syslog facility all
+```
+
+**Test:**
+```bash
+logger -n <PI-IP> -P 514 "Test message"
+```
+
 ## Performance Tips
 
 1. **Use SSD** - Dramatically improves Elasticsearch I/O

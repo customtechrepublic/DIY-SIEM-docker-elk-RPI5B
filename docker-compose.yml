@@ -98,6 +98,8 @@ services:
       - 5044:5044
       - 50000:50000/tcp
       - 50000:50000/udp
+      - 514:514/tcp
+      - 514:514/udp
       - 9600:9600
     environment:
       # Raspberry Pi 5 optimized: Reduced heap for ARM64

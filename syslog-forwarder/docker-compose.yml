@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  syslog-forwarder:
+    image: rsyslog/rsyslog:latest
+    container_name: syslog-forwarder
+    hostname: syslog-forwarder
+    ports:
+      - "514:514/tcp"
+      - "514:514/udp"
+    volumes:
+      - ./config/rsyslog.conf:/etc/rsyslog.conf:ro
+      - syslog-data:/var/log
+    environment:
+      - RSYSLOG_CONFIG_DEBUG=0
+    networks:
+      - elk
+    restart: unless-stopped
+
+networks:
+  elk:
+    external: true
+
+volumes:
+  syslog-data:
