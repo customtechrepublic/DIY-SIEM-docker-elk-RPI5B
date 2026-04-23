@@ -82,6 +82,12 @@ services:
       discovery.type: single-node
       # Disable memory lock for ARM64 compatibility
       bootstrap.memory_lock: false
+    healthcheck:
+      test: ["CMD-SHELL", "curl -s http://localhost:9200 >/dev/null || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
     networks:
       - elk
     restart: unless-stopped
@@ -105,6 +111,12 @@ services:
       # Raspberry Pi 5 optimized: Reduced heap for ARM64
       LS_JAVA_OPTS: -Xms128m -Xmx128m -XX:+UseG1GC
       LOGSTASH_INTERNAL_PASSWORD: ${LOGSTASH_INTERNAL_PASSWORD:-}
+    healthcheck:
+      test: ["CMD-SHELL", "curl -s http://localhost:9600 >/dev/null || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
     networks:
       - elk
     depends_on:
@@ -122,6 +134,12 @@ services:
       - 5601:5601
     environment:
       KIBANA_SYSTEM_PASSWORD: ${KIBANA_SYSTEM_PASSWORD:-}
+    healthcheck:
+      test: ["CMD-SHELL", "curl -s http://localhost:5601/api/status >/dev/null || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
     networks:
       - elk
     depends_on:
